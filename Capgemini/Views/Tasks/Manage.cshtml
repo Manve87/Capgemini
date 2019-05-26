@@ -1,0 +1,87 @@
+﻿@model Capgemini.ViewModel.TasksUsersViewModel
+@{
+    ViewBag.Title = "Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage</h2>
+
+
+@if (Model.tasks.Count == 0)
+{
+    <text>no tasks</text>
+}
+else
+{
+<table   class="table table-hover table-bordered ">
+    <thead>
+        <tr>
+            <th colspan="2">Tasks</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.tasks)
+        {
+            <tr>
+                <td>@task.taskName</td>
+                <td>
+                    @foreach (var user in Model.users)
+                    {@Html.ActionLink("assign to " + user.userName + " ", "assign", new { idTask = task.id, idUser = user.id }, null)}
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+}
+@if (Model.users.Count == 0)
+{
+    <text>no users</text>
+}
+else
+{
+    foreach (var user in Model.users)
+    {
+<table class=" table table-custom table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>User @user.id</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (user.GetTasks() == null)
+    {
+        <tr> <td> <text> no tasks</text> </td></tr>
+}
+else
+{
+    if (user.GetTasks().Count() == 0)
+    {
+        <tr> <td> <text> no tasks</text> </td></tr>
+}
+else
+{
+    foreach (var task in user.GetTasks())
+    {
+        <tr>
+            <td>
+                <text>@task.taskName</text>
+            </td>
+        </tr>
+
+}
+}
+
+
+        }
+    </tbody>
+    
+</table>
+        }
+
+}
+
